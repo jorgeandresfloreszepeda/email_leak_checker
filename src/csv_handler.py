@@ -4,7 +4,8 @@ import csv
 def read_emails_from_csv(file_path):
     """Read emails from the 4th column of a CSV file."""
     try:
-        df = pd.read_csv(file_path, header=None)
+        # Try reading with 'latin1' encoding, which handles more byte sequences
+        df = pd.read_csv(file_path, header=None, encoding='latin1')
         if df.shape[1] < 4:
             raise ValueError("CSV must have at least 4 columns")
         emails = df[3].dropna().str.strip().tolist()

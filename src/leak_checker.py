@@ -1,5 +1,5 @@
-from .api_client import HaveIBeenPwnedClient
-from .csv_handler import read_emails_from_csv, write_leaked_emails
+from api_client import HaveIBeenPwnedClient
+from csv_handler import read_emails_from_csv, write_leaked_emails
 import time
 
 class LeakChecker:

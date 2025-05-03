@@ -1,5 +1,5 @@
 import os
-from .leak_checker import LeakChecker
+from leak_checker import LeakChecker
 
 def main():
     api_key = os.getenv("HIBP_API_KEY")  # Set this in your environment
