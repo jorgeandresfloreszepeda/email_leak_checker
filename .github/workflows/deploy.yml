@@ -1,0 +1,40 @@
+name: Deploy to Azure Container Instances
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # GitHub-hosted runner
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: myleakcheckeracr.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build . -t myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }}
+          docker push myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }}
+
+      - name: Deploy to Azure Container Instances
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az container create \
+              --resource-group leak-checker-rg \
+              --name email-leak-checker-aci \
+              --image myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }} \
+              --registry-login-server myleakcheckeracr.azurecr.io \
+              --registry-username ${{ secrets.ACR_USERNAME }} \
+              --registry-password ${{ secrets.ACR_PASSWORD }} \
+              --dns-name-label email-leak-checker-aci \
+              --ports 80 \
+              --restart-policy OnFailure
