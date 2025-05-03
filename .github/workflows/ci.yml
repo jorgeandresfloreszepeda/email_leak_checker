@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests with pytest
         env:
-          PYTHONPATH: src
+          PYTHONPATH: ./src
         run: |
           pytest tests/test_email_leak_checker_pytest.py --verbose --cov=src --cov-report=xml
 
