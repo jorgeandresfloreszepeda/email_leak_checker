@@ -46,4 +46,6 @@ class HaveIBeenPwnedClient:
             return None
         # Sort by BreachDate descending
         most_recent = max(recent_breaches, key=lambda x: parser.parse(x['BreachDate']))
+        print(f"Most recent breach for email: {most_recent['Name']}")
+        # Return the title of the most recent breach
         return most_recent['Title']

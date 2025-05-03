@@ -17,7 +17,7 @@ class LeakChecker:
             breach_title = self.client.get_most_recent_breach(breaches, months=6)
             if breach_title:
                 leaked_emails.append((email, breach_title))
-            time.sleep(1.6)  # Respect HIBP rate limit (1.5s + buffer)
+            time.sleep(10)
         
         if leaked_emails:
             write_leaked_emails(output_csv, leaked_emails)
