@@ -23,6 +23,11 @@ jobs:
           docker build . -t myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }}
           docker push myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }}
 
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy to Azure Container Instances
         uses: azure/CLI@v1
         with:
