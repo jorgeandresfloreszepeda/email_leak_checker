@@ -36,3 +36,52 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install linters
+        run: |
+          pip install flake8
+      - name: Run flake8
+        run: |
+          flake8 src/ tests/ --max-line-length=88 --extend-ignore=E203
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install black
+        run: |
+          pip install black
+      - name: Check formatting with black
+        run: |
+          black --check src/ tests/ --line-length=88
+
+  dependency-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' # Only run on schedule
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install pip-audit
+        run: |
+          pip install pip-audit
+      - name: Check for vulnerable dependencies
+        run: |
+          pip-audit -r requirements.txt
+      - name: Notify on vulnerabilities
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
