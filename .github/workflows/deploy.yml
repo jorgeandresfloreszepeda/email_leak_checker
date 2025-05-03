@@ -34,7 +34,7 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az container create \
-              --resource-group leak-checker-rg \
+              --resource-group rg-securitytools \
               --name email-leak-checker-aci \
               --image myleakcheckeracr.azurecr.io/email-leak-checker:${{ github.run_id }} \
               --registry-login-server myleakcheckeracr.azurecr.io \
