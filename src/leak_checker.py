@@ -14,7 +14,7 @@ class LeakChecker:
         for i, email in enumerate(emails, 1):
             print(f"Checking email {i}/{len(emails)}: {email}")
             breaches = self.client.check_breaches(email)
-            breach_title = self.client.get_most_recent_breach(breaches, months=6)
+            breach_title = self.client.get_most_recent_breach(breaches, months=12)
             if breach_title:
                 leaked_emails.append((email, breach_title))
             time.sleep(10)

@@ -33,7 +33,7 @@ class HaveIBeenPwnedClient:
             print(f"Error checking {email}: {e}")
             return []
 
-    def get_most_recent_breach(self, breaches, months=6):
+    def get_most_recent_breach(self, breaches, months=12):
         """Find the most recent breach within the last specified months."""
         if not breaches:
             return None
